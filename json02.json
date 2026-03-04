@@ -1,0 +1,72 @@
+[
+    {
+        "cpf": "111.222.333-10",
+        "nome": "João da Silva",
+        "data_nascimento": "1990-05-12",
+        "email": "joaosilva@hotmail.com",
+        "preferencias": ["futebol", "terror", "viajar"]
+    },
+    {
+        "cpf": "123.456.789-20",
+        "nome": "Maria Eduarda",
+        "data_nascimento": "2000-10-20",
+        "email": "meduarda@email.br",
+        "preferencias": ["natação", "romance", "leitura"]
+    },
+    {
+        "cpf": "098.765.543-31",
+        "nome": "Pedro Felipe",
+        "data_nascimento": "1989-03-05",
+        "email": "pedrofe@gmail.com",
+        "preferencias": ["boxe", "ação", "musculação"]
+    },
+    {
+        "cpf": "490.665.143-81",
+        "nome": "Rafael Antonio",
+        "data_nascimento": "2002-03-15",
+        "email": "antoniorafa@hotmail.com",
+        "preferencias": ["futebol", "ação", "volei"]
+    },
+    {
+        "cpf": "332.765.646-76",
+        "nome": "Maria da Penha",
+        "data_nascimento": "1999-08-12",
+        "email": "mariapenha@gmail.com",
+        "preferencias": ["crossfit", "romance", "cozinhar"]
+    },
+    {
+        "cpf": "112.765.345-90",
+        "nome": "Beatriz Pereira",
+        "data_nascimento": "1988-12-25",
+        "email": "beapereira@mail.com",
+        "preferencias": ["volei", "ficção", "caminhar"]
+    },
+    {
+        "cpf": "398.555.112-33",
+        "nome": "Fabio Junior",
+        "data_nascimento": "1977-07-15",
+        "email": "fabiojr@gmail.com",
+        "preferencias": ["musculação", "ação", "cozinhar"]
+    },
+    {
+        "cpf": "196.665.553-51",
+        "nome": "Carlos de Souza",
+        "data_nascimento": "1990-11-11",
+        "email": "carlossouza@empresa.com",
+        "preferencias": ["tiro", "terror", "musculação"]
+    },
+    {
+        "cpf": "990.765.336-01",
+        "nome": "Ana de Freitas",
+        "data_nascimento": "1978-06-05",
+        "email": "anafreitas78@gmail.com",
+        "preferencias": ["paraquedismo", "documentário", "pedalar"]
+    },
+    {
+        "cpf": "109.065.453-33",
+        "nome": "Paulo Vieria",
+        "data_nascimento": "1989-03-05",
+        "email": "pedrofe@gmail.com",
+        "preferencias": ["jogging", "comédia", "teatro"]
+    }
+]

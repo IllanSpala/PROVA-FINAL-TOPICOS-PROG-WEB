@@ -1,0 +1,211 @@
+<!--ILLAN SPALA 2022201138-->   
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <link rel="stylesheet" href="styles.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pq1 - Cadastro e Consulta</title>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+</head>
+<body>
+
+    <h1>Cadastro de Nova Pessoa</h1>
+    
+    <form id="form-cadastro">
+        <div class="form-group">
+            <label for="nome">Nome Completo:</label><br>
+            <input type="text" id="nome" name="nome" required>
+            <span id="erro-nome" class="error">O nome deve conter pelo menos 10 caracteres.</span>
+        </div>
+
+        <div class="form-group">
+            <label for="cpf">CPF (apenas números):</label><br>
+            <input type="text" id="cpf" name="cpf" maxlength="11" required>
+            <span id="erro-cpf" class="error">O CPF deve conter exatamente 11 números.</span>
+        </div>
+
+        <div class="form-group">
+            <label for="dataNascimento">Data de Nascimento:</label><br>
+            <input type="date" id="dataNascimento" name="dataNascimento" required>
+            <span id="erro-idade" class="error">A pessoa deve ser maior de idade (18+ anos).</span>
+        </div>
+
+        <div class="form-group">
+            <label for="email">E-mail:</label><br>
+            <input type="email" id="email" name="email" required>
+            <span id="erro-email" class="error">Insira um e-mail válido contendo '@'.</span>
+        </div>
+
+        <fieldset>
+            <legend>Preferências</legend>
+            
+            <div class="radio-group">
+                <strong>Esporte:</strong>
+                <label><input type="radio" name="esporte" value="Futebol" required> Futebol</label>
+                <label><input type="radio" name="esporte" value="Basquete"> Basquete</label>
+                <label><input type="radio" name="esporte" value="Natação"> Natação</label>
+            </div>
+
+            <div class="radio-group">
+                <strong>Filme:</strong>
+                <label><input type="radio" name="filme" value="Ação" required> Ação</label>
+                <label><input type="radio" name="filme" value="Comédia"> Comédia</label>
+                <label><input type="radio" name="filme" value="Terror"> Terror</label>
+            </div>
+
+            <div class="radio-group">
+                <strong>Lazer:</strong>
+                <label><input type="radio" name="lazer" value="Musculação" required> Musculação</label>
+                <label><input type="radio" name="lazer" value="Leitura"> Leitura</label>
+                <label><input type="radio" name="lazer" value="Videogame"> Videogame</label>
+            </div>
+        </fieldset>
+
+        <button type="submit">Cadastrar</button>
+    </form>
+
+    <hr>
+
+    <h1>Resultados da Pesquisa</h1>
+    
+    <table border="1" cellpadding="5" cellspacing="0">
+        <thead>
+            <tr>
+                <th>Nome</th>
+                <th>CPF</th>
+                <th>Data de Nascimento</th>
+                <th>E-mail</th>
+                <th>Preferências (Esporte, Filme, Lazer)</th>
+            </tr>
+        </thead>
+        <tbody id="corpo-tabela">
+        </tbody>
+    </table>
+
+    <h2>Filtro: Lazer "Musculação" e Idade &lt; 30 anos</h2>
+    <ul id="lista-filtrada">
+    </ul>
+
+    <script>
+        function calcularIdade(dataNascimento) {
+            const nascimento = new Date(dataNascimento);
+            const hoje = new Date();
+            let idade = hoje.getFullYear() - nascimento.getFullYear();
+            const mes = hoje.getMonth() - nascimento.getMonth();
+            
+            if (mes < 0 || (mes === 0 && hoje.getDate() < nascimento.getDate())) {
+                idade--;
+            }
+            return idade;
+        }
+
+        document.getElementById('form-cadastro').addEventListener('submit', function(event) {
+            event.preventDefault(); 
+            
+            let formValido = true;
+
+            document.querySelectorAll('.error').forEach(el => el.style.display = 'none');
+
+            // 1 -> Nome não pode conter menos que 10 caracteres
+            const nome = document.getElementById('nome').value.trim();
+            if (nome.length < 10) {
+                document.getElementById('erro-nome').style.display = 'block';
+                formValido = false;
+            }
+
+            // 2 -> E-mail deve ter o caracter @ (O input type="email" já ajuda, mas reforçamos via JS)
+            const email = document.getElementById('email').value;
+            if (!email.includes('@')) {
+                document.getElementById('erro-email').style.display = 'block';
+                formValido = false;
+            }
+
+            // 3 -> Data de nascimento: a pessoa só pode ser maior de idade (18 anos ou mais)
+            const dataNascimento = document.getElementById('dataNascimento').value;
+            if (calcularIdade(dataNascimento) < 18) {
+                document.getElementById('erro-idade').style.display = 'block';
+                formValido = false;
+            }
+
+            // 4 -> CPF só pode ter 11 números (e números only)
+            const cpf = document.getElementById('cpf').value;
+            const cpfRegex = /^[0-9]{11}$/;if (!cpfRegex.test(cpf)) {
+                document.getElementById('erro-cpf').style.display = 'block';
+                formValido = false;
+            }
+
+            if (formValido) {
+                // Redireciona para a página de confirmação
+                window.location.href = "confirmacao.html";
+            }
+        });
+
+        async function carregarDados() {
+            try {
+                const url = 'https://proti.alegre.ufes.br/topicos/json02.json';
+                const resposta = await axios.get(url);
+                const pessoas = resposta.data;
+
+                const corpoTabela = document.getElementById('corpo-tabela');
+                const listaFiltrada = document.getElementById('lista-filtrada');
+
+                pessoas.forEach(pessoa => {
+                    const linha = document.createElement('tr');
+                    
+                    linha.innerHTML = `
+                        <td>${pessoa.nome}</td>
+                        <td>${pessoa.cpf}</td>
+                        <td>${pessoa.data_nascimento}</td>
+                        <td>${pessoa.email}</td>
+                        <td>${pessoa.preferencias.join(', ')}</td>
+                    `;
+                    
+                    corpoTabela.appendChild(linha);
+                });
+
+                const pessoasFiltradas = pessoas.filter(pessoa => {
+                    const idade = calcularIdade(pessoa.data_nascimento);
+                    const lazer = pessoa.preferencias[2].toLowerCase();
+                    return (lazer.includes('musculação') || lazer.includes('musculacao')) && idade < 30;
+                });
+
+                if (pessoasFiltradas.length > 0) {
+                    pessoasFiltradas.forEach(pessoa => {
+                        const itemLista = document.createElement('li');
+                        itemLista.innerHTML = `<span class="resultado-filtro">${pessoa.nome}</span> (Idade: ${calcularIdade(pessoa.data_nascimento)} anos)`;
+                        listaFiltrada.appendChild(itemLista);
+                    });
+                } else {
+                    listaFiltrada.innerHTML = "<li>Nenhuma pessoa encontrada com esses critérios.</li>";
+                }
+
+            } catch (erro) {
+                console.error("Erro ao carregar o JSON: (axios)", erro);
+                const url ='./json02.json';
+                try {
+                    const respostaLocal = await axios.get(url);
+                    const pessoas = respostaLocal.data;
+                    const corpoTabela = document.getElementById('corpo-tabela');
+                    pessoas.forEach(pessoa => {
+                        const linha = document.createElement('tr');
+                        linha.innerHTML = `
+                            <td>${pessoa.nome}</td>
+                            <td>${pessoa.cpf}</td>
+                            <td>${pessoa.data_nascimento}</td>
+                            <td>${pessoa.email}</td>
+                            <td>${pessoa.preferencias.join(', ')}</td>
+                        `;
+                        corpoTabela.appendChild(linha);
+                    });
+                
+                } catch (erroLocal) {
+                    console.error("Erro ao carregar o JSON local: (axios)", erroLocal); 
+                document.getElementById('corpo-tabela').innerHTML = `<tr><td colspan="5" style="color:red; text-align:center;">Erro ao carregar os dados da pesquisa. Verifique o console.</td></tr>`;
+            }
+        }
+    }
+        carregarDados();
+    </script>
+</body>
+</html>

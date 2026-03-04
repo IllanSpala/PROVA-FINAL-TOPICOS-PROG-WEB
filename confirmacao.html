@@ -1,0 +1,68 @@
+<!--ILLAN SPALA 2022201138-->
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastro Confirmado</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f4f4f9;
+            margin: 0;
+        }
+        .mensagem-box {
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+        h1 {
+            color: #4CAF50;
+        }
+        a {
+            display: inline-block;
+            margin-top: 20px;
+            text-decoration: none;
+            color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="mensagem-box">
+        <h1>Sucesso!</h1>
+        <p id="mensagem-data"></p>
+        <a href="index.html">← Voltar para o início</a>
+    </div>
+
+    <script>
+     const hoje = new Date();
+        
+        const diasDaSemana = [
+            "domingo", "segunda-feira", "terça-feira", "quarta-feira", 
+            "quinta-feira", "sexta-feira", "sábado"
+        ];
+        
+        const meses = [
+            "janeiro", "fevereiro", "março", "abril", "maio", "junho", 
+            "julho", "agosto", "setembro", "outubro", "novembro", "dezembro"
+        ];
+
+        const diaSemana = diasDaSemana[hoje.getDay()];
+        const diaNumero = hoje.getDate();
+        const nomeMes = meses[hoje.getMonth()];
+        const ano = hoje.getFullYear();
+
+        const texto = `Os dados da pessoa foram registrados com sucesso no dia ${diaSemana}, ${diaNumero} de ${nomeMes} de ${ano}.`;
+        
+        document.getElementById('mensagem-data').textContent = texto;
+    </script>
+
+</body>
+</html>
